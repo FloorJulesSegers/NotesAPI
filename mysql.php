@@ -6,12 +6,23 @@ $mydb ="APInotes";
 
 $myTitle = $_GET['title'];
 $titleClean = filter_var( $myTitle,FILTER_SANITIZE_STRING);
-echo "<p>My title is: <?php $titleClean ?>.</p>";
+//echo "$titleClean";
+
+$json = "{
+    'title': '$titleClean',
+    'content': '$contentClean',
+    'made_at': '2019-08-12'
+}";
+
+$jsonData =json_encode($json);
+
+
 
 
 $myContent = $_POST['content'];
 $contentClean = filter_var($myContent, FILTER_SANITIZE_STRING);
-echo "$myContent";
+//echo "$contentClean";
+
 
 // Create connection
 $conn = new mysqli($servername, $username, $password,$mydb);
@@ -20,9 +31,9 @@ $conn = new mysqli($servername, $username, $password,$mydb);
 //Select table
 $mysql= "INSERT INTO notes (title, content, made_at)
             VALUES ('$titleClean', '$contentClean','2019-08-12')";
-$result = $conn->query($mysql);
+$result = $conn->query($jsonData);
 if ($result) {
-    echo "New record created successfully";
+    echo "$json";
 } else {
     echo "Error: " . $mysql . "<br>" . $conn->error;
 }
