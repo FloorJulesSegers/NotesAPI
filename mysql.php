@@ -13,8 +13,8 @@ $myContent = $_POST['content'];
 $contentClean = filter_var($myContent, FILTER_SANITIZE_STRING);
 //echo "$contentClean";
 
-$date = date('Y-m-d H:i:s');
 date_default_timezone_set("Europe/Brussels");
+$date = date('Y-m-d H:i:s');
 
 
 // Create connection
@@ -31,6 +31,7 @@ if ($result) {
     echo "Error: " . $mysql . "<br>" . $conn->error;
 }
 
+//Select objects from table
 $list = "SELECT * FROM notes";
 $resultList = $conn -> query ($list);
 if ($resultList->num_rows > 0) {
@@ -42,7 +43,26 @@ if ($resultList->num_rows > 0) {
     echo "0 results";
 }
 
-$conn->close;
+//Delete objects
+$deleteObject = "DELETE FROM notes WHERE content= ''";
+$resultDelete = $conn -> query ($deleteObject);
+if ($resultDelete) {
+    echo "Record deleted successfully";
+} else {
+    echo "Error deleting record: " . $conn->error;
+}
+
+//Update objects
+$update = "UPDATE notes SET title='Lennert' WHERE content= 'Hallo allemaal'";
+$resultUpdate = $conn -> query ($update);
+
+if ($resultUpdate) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+
+$conn->close();
 
 
 // Check connection
